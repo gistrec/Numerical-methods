@@ -4,7 +4,8 @@ project(lab_cm_v1)
 set(CMAKE_CXX_STANDARD 11)
 
 set(ADDITIONAL_FILES
-        matrix.cpp)
+        src/matrix.cpp
+        src/main.cpp)
 
 
-add_executable(lab_cm_v1 main.cpp ${ADDITIONAL_FILES})
+add_executable(lab_cm_v1 ${ADDITIONAL_FILES})

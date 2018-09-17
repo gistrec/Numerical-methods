@@ -69,7 +69,7 @@ void run() {
 }*/
 
 int main() {
-    std::ifstream file("../input.txt", std::fstream::in);
+    std::ifstream file("../inputs/input.txt", std::fstream::in);
     auto m = new My::Matrix<int>();
     m->read(file);
     m->print();
