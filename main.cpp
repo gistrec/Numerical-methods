@@ -69,10 +69,14 @@ void run() {
 }*/
 
 int main() {
-    std::ifstream file("input.txt");
-    My::Matrix<int>* m = new My::Matrix<int>();
+    std::ifstream file("../input.txt", std::fstream::in);
+    auto m = new My::Matrix<int>();
     m->read(file);
+    m->print();
+    // NOTE: элементы считаются с нуля
+    (*m)[2][2] = 0;
+    m->print();
 
-    std::cout << "Hello, World!" << std::endl;
+    std::cout << "It's work!" << std::endl;
     return 0;
 }

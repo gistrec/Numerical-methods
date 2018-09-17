@@ -32,7 +32,7 @@ namespace My {
          */
         void print() const;
 
-        const vector<Type>& operator[](int n) const;
+        vector<Type>& operator[](int n);
     };
 
     template class Matrix<float>;

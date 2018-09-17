@@ -6,11 +6,13 @@ My::Matrix<Type>::Matrix()
 
 template <class Type>
 void My::Matrix<Type>::read(std::ifstream &file) {
+    assert(file.is_open() && !file.fail());
+
     file >> _size;
-    _matrix.reserve(_size);
+    _matrix.resize(_size);
 
     for (int i = 0; i < _size; i++) {
-        _matrix.reserve(_size);
+        _matrix[i].resize(_size);
         for (int j = 0; j < _size; j++) {
             file >> _matrix[i][j];
         }
@@ -28,6 +30,6 @@ void My::Matrix<Type>::print() const {
 }
 
 template <class Type>
-const vector<Type>& My::Matrix<Type>::operator [] (int n) const {
+vector<Type>& My::Matrix<Type>::operator [] (int n) {
     return _matrix[n];
 }
