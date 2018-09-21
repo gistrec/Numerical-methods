@@ -72,17 +72,15 @@ void run() {
  * Функция нужна для декомпозиции матрицы на LDU
  */
 template <typename Type>
-My::Matrix<Type>* result(My::Matrix<Type> &matrix) {
-    My::Matrix<int> res(matrix.size());
-
+My::Matrix<Type>* decomposition(My::Matrix<Type> &matrix) {
     for (int i = 0; i < matrix.size(); i++) {
         // 1. Находим D
         // Для этого нужно просто пройтись по диагонали
         Type D = matrix[i][i];
         for (int k = 0; k < i; k++) {
-            D -= res[i][k] * res[k][k] * res[k][i];
+            D -= matrix[i][k] * matrix[k][k] * matrix[k][i];
         }
-        res[i][i] = D;
+        matrix[i][i] = D;
 
         // 2. Находим U и L
         // Для этого нужно пройтись по всей строке/столбцу
@@ -90,23 +88,25 @@ My::Matrix<Type>* result(My::Matrix<Type> &matrix) {
             Type U = matrix[i][row];
             Type L = matrix[row][i];
             for (int k = 0; k < i; k++) {
-                U -= res[i][k] * res[k][k] * res[k][row];
-                L -= res[k][i] * res[k][k] * res[row][k];
+                U -= matrix[i][k] * matrix[k][k] * matrix[k][row];
+                L -= matrix[k][i] * matrix[k][k] * matrix[row][k];
             }
-            res[i][row] = U / res[i][i];
-            res[row][i] = L / res[i][i];
+            matrix[i][row] = U / matrix[i][i];
+            matrix[row][i] = L / matrix[i][i];
         }
     }
-    res.print();
 }
+
 
 int main() {
     std::ifstream file("../inputs/input.txt", std::fstream::in);
     My::Matrix<float> matrix;
     matrix.read(file);
     matrix.print();
-    // NOTE: элементы считаются с нуля
-    result(matrix);
+
+    // Получаем LDU разложение
+    decomposition(matrix);
+    matrix.print();
 
     std::cout << "It's work!" << std::endl;
     return 0;
