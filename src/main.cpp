@@ -84,24 +84,17 @@ My::Matrix<Type>* result(My::Matrix<Type> &matrix) {
         }
         res[i][i] = D;
 
-        // 2. Находим U
-        // Для этого нужно пройтись по всей строке
+        // 2. Находим U и L
+        // Для этого нужно пройтись по всей строке/столбцу
         for (int row = i + 1; row < matrix.size(); row++) {
             Type U = matrix[i][row];
+            Type L = matrix[row][i];
             for (int k = 0; k < i; k++) {
                 U -= res[i][k] * res[k][k] * res[k][row];
+                L -= res[k][i] * res[k][k] * res[row][k];
             }
             res[i][row] = U / res[i][i];
-        }
-
-        // 3. Находим L
-        // Для этого нужно пройтись по всему столбцу
-        for (int column = i + 1; column < matrix.size(); column++) {
-            Type L = matrix[column][i];
-            for (int k = 0; k < column; k++) {
-                L -= res[k][i] * res[k][k] * res[column][k];
-            }
-            res[column][i] = L / res[i][i];
+            res[row][i] = L / res[i][i];
         }
     }
     res.print();
