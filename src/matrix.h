@@ -42,6 +42,11 @@ namespace My {
         size_t size() const;
 
         vector<Type>& operator[](int n);
+
+        /**
+         * Функция позволяет разложить матрицу на LDU матрицы
+         */
+        void decomposition();
     };
 
     template class Matrix<double>;
