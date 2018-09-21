@@ -68,14 +68,52 @@ void run() {
     customPrint(U);
 }*/
 
+/**
+ * Функция нужна для декомпозиции матрицы на LDU
+ */
+template <typename Type>
+My::Matrix<Type>* result(My::Matrix<Type> &matrix) {
+    My::Matrix<int> res(matrix.size());
+
+    for (int i = 0; i < matrix.size(); i++) {
+        // 1. Находим D
+        // Для этого нужно просто пройтись по диагонали
+        Type D = matrix[i][i];
+        for (int k = 0; k < i; k++) {
+            D -= res[i][k] * res[k][k] * res[k][i];
+        }
+        res[i][i] = D;
+
+        // 2. Находим U
+        // Для этого нужно пройтись по всей строке
+        for (int row = i + 1; row < matrix.size(); row++) {
+            Type U = matrix[i][row];
+            for (int k = 0; k < i; k++) {
+                U -= res[i][k] * res[k][k] * res[k][row];
+            }
+            res[i][row] = U / res[i][i];
+        }
+
+        // 3. Находим L
+        // Для этого нужно пройтись по всему столбцу
+        for (int column = i + 1; column < matrix.size(); column++) {
+            Type L = matrix[column][i];
+            for (int k = 0; k < column; k++) {
+                L -= res[k][i] * res[k][k] * res[column][k];
+            }
+            res[column][i] = L / res[i][i];
+        }
+    }
+    res.print();
+}
+
 int main() {
     std::ifstream file("../inputs/input.txt", std::fstream::in);
-    auto m = new My::Matrix<int>();
-    m->read(file);
-    m->print();
+    My::Matrix<float> matrix;
+    matrix.read(file);
+    matrix.print();
     // NOTE: элементы считаются с нуля
-    (*m)[2][2] = 0;
-    m->print();
+    result(matrix);
 
     std::cout << "It's work!" << std::endl;
     return 0;
